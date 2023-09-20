@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const commentschema=new mongoose.Schema({
+
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"USER"
@@ -16,7 +17,7 @@ const commentschema=new mongoose.Schema({
 commentschema.pre(/^find/,function(next){
     this.populate({
         path:"user",
-        select:"firstname lastname username email"
+        select:"firstname lastname  email"
     })
     next()
 })
