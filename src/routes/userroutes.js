@@ -14,7 +14,7 @@ datacheck.emailexist,
 validator.useraccountrule(),
 validator.inputvalidator,
 usercontroller.createuser)
-router.get("/",verifyaccess,usercontroller.getalluser)
+router.get("/",verifyaccess("user"),usercontroller.getalluser)
 router.get("/:id",usercontroller.getoneuser)
 router.delete("/:id",usercontroller.deleteoneuser)
 router.delete("/",usercontroller.deletealluser)
