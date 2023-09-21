@@ -75,5 +75,52 @@ class productcontroller{
             return successmessage(res,200,`product successfuly updated`,product)
         }
     }
+
+    static async createlikes(req,res){
+        const id=req.params.id
+        const prolike=await Product.findById(id)
+        if(!prolike){
+            return errormessage(res,401,` product with id ${id} not found`)
+        }
+        else{
+            const userid = req.user._id;
+            if(prolike.likes.includes(userid)){
+                return errormessage(res,401,`already you liked our product`)
+            }
+            else{
+                if(prolike.dislikes.includes(userid)){
+                    prolike.dislikes.pull(userid);
+                }
+                prolike.likes.push(userid);
+                prolike.save();
+                return successmessage(res,200,`like from ${rep.user.firstname}`,prolike)
+            }
+            // prolike.likes +=1;
+            // await prolike.save()
+            // return successmessage(res,200,`you liked ${prolike.likes}`,prolike)
+        }
+    }
+
+    static async createdislikes(req,res){
+        const id=req.params.id
+        const prodislike=await Product.findById(id)
+        if(!prodislike){
+            return errormessage(res,401,`product with id ${id} not found`)
+        }
+        else{
+             const userid=req.user._id;
+             if(prodislike.dislikes.includes(userid)){
+                prodislike.likes.pull(userid);
+             }
+             prodislike.dislikes.push(userid);
+             prodislike.save();
+             return successmessage(res,200,`you dislike ${req.user.firstname}`)
+
+            // prodislike.dislikes +=1;
+            // await prodislike.save()
+            // return successmessage(res,200,`you disliked ${prodislike.dislikes}`,prodislike)
+        }
+
+    }
 }
 export default productcontroller

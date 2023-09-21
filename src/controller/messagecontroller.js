@@ -4,7 +4,7 @@ import successmessage from "../utils/successmessage";
 
 class messagecontroller{
     static async createmessage(req,res){
-        const {message,user}=req.body
+        req.body.user=req.user._id
         const messages=await MESSAGE.create(req.body)
         if(!messages){
             return errormessage(res,401,`message not created`)

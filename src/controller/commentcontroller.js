@@ -8,15 +8,14 @@ class commentcontroller{
         const idproduct=req.params.id
         req.body.user=req.user._id
         const comment=await COMMENT.create(req.body)
-        console.log(comment)
-        // const products=await Product.findByIdAndUpdate({_id:idproduct},{$push:{comment:comment}},{new:true})
+        const products=await Product.findByIdAndUpdate({_id:idproduct},{$push:{comment:comment}},{new:true})
        
-    //     if(!products){
-    //     return errormessage(res,401,`comment not posted`)
-    // }
-    // else{
-    //     return successmessage(res,200,`comment successfuly posted`,products)
-    // }
+        if(!products){
+        return errormessage(res,401,`comment not posted`)
+    }
+    else{
+        return successmessage(res,200,`comment successfuly posted`,comment)
+    }
     }
   static async getallcomment(req,res){
         const comment=await COMMENT.find()
