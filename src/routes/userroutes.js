@@ -15,10 +15,10 @@ validator.useraccountrule(),
 validator.inputvalidator,
 usercontroller.createuser)
 router.get("/",verifyaccess("user"),usercontroller.getalluser)
-router.get("/:id",usercontroller.getoneuser)
-router.delete("/:id",usercontroller.deleteoneuser)
-router.delete("/",usercontroller.deletealluser)
-router.patch("/:id",usercontroller.updateuser)
+router.get("/:id",verifyaccess("admin"),usercontroller.getoneuser)
+router.delete("/:id",verifyaccess("admin"),usercontroller.deleteoneuser)
+router.delete("/",verifyaccess("admin"),usercontroller.deletealluser)
+router.patch("/:id",verifyaccess("admin"),usercontroller.updateuser)
 router.post("/login",usercontroller.loginuser)
 
 export default router
