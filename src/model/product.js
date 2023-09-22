@@ -25,14 +25,14 @@ const productschema=new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
-    likes:{
-        type:Number,
-        default:0
-    },
-    dislikes:{
-        type:Number,
-        default:0
-    },
+    likes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"USER"
+    }],
+    dislikes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"USER"
+    }],
     comment:[{
         type:mongoose.Schema.Types.ObjectId,
         ref:"COMMENT"

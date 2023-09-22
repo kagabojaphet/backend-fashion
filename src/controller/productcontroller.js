@@ -84,7 +84,7 @@ class productcontroller{
         }
         else{
             const userid = req.user._id;
-            if(prolike.likes.includes(userid)){
+            if (prolike.likes.includes(userid)) {
                 return errormessage(res,401,`already you liked our product`)
             }
             else{
@@ -93,7 +93,7 @@ class productcontroller{
                 }
                 prolike.likes.push(userid);
                 prolike.save();
-                return successmessage(res,200,`like from ${rep.user.firstname}`,prolike)
+                return successmessage(res,200,`like from ${req.user.firstname}`,prolike)
             }
             // prolike.likes +=1;
             // await prolike.save()
@@ -109,7 +109,7 @@ class productcontroller{
         }
         else{
              const userid=req.user._id;
-             if(prodislike.dislikes.includes(userid)){
+             if(prodislike.likes.includes(userid)){
                 prodislike.likes.pull(userid);
              }
              prodislike.dislikes.push(userid);
