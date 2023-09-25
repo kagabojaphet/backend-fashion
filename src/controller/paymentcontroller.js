@@ -2,9 +2,12 @@ import Payment from "../model/payment";
 import Product from "../model/product";
 import errormessage from "../utils/errormessage"
 import successmessage from "../utils/successmessage"
-import Stripe from "stripe";
+import dotenv from 'dotenv'
 
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
+dotenv.config()
+
+
 
 class paymentcontroller{
     static async createpayment(req,res){
@@ -21,20 +24,40 @@ class paymentcontroller{
             req.body.products=prid._id
             req.body.productCost=prid.productcost
             req.body.currency=prid.currency
-            const productCost=req.body.productCost
+            const amount=req.body.productCost
             const currency= req.body.currency
-            const source=req.body
-      try{
-        const paymentIntent = await stripe.paymentIntents.create({
-            productCost,
-            currency,
-            source, //This is the payment source, such as a card token
-          });
-       
-        return successmessage(res,200,{ clientSecret: paymentIntent.client_secret });
-      }catch(err){
-        return errormessage(res,500,err)
-      }
+            const source=req.body.source
+            const authHeader = req.headers['authorization'];
+            
+            if (!authHeader) {
+              return res.status(401).json({ error: 'Authentication failed' });
+            }
+            const token=authHeader
+         
+        
+            if (token !== process.env.STRIPE_SECRET_KEY) {
+              return res.status(401).json({ error: 'Authentication failed' });
+            }
+      
+          
+
+            try {
+           
+                const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+                const payment = await stripe.paymentIntents.create({
+                  amount:amount,
+                  currency:currency
+
+                
+                });
+             
+               
+        return successmessage(res,200,'payment succes',{ clientSecret: payment.client_secret })
+               
+              } catch (error) {
+                console.error(error);
+                res.status(500).json({ error: 'Failed to create payment intent' });
+              }
          
    
         // req.body.user=req.user._id
