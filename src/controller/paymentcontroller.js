@@ -2,15 +2,45 @@ import Payment from "../model/payment";
 import Product from "../model/product";
 import errormessage from "../utils/errormessage"
 import successmessage from "../utils/successmessage"
+import Stripe from "stripe";
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 class paymentcontroller{
     static async createpayment(req,res){
-        const id=req.params._id
-        const prid=await Product.findById(id)
         req.body.user=req.user._id
-        const payment=await Payment.create({_id:prid},req.body)
+       
+        const id=req.params._id
+            const prid=await Product.findById(id)
+         
+        
+            if(!prid){
+                return errormessage(res,401,`no product found`)
+            }
+        
+            req.body.products=prid._id
+            req.body.productCost=prid.productcost
+            req.body.currency=prid.currency
+            const productCost=req.body.productCost
+            const currency= req.body.currency
+            const source=req.body
+      try{
+        const paymentIntent = await stripe.paymentIntents.create({
+            productCost,
+            currency,
+            source, //This is the payment source, such as a card token
+          });
+       
+        return successmessage(res,200,{ clientSecret: paymentIntent.client_secret });
+      }catch(err){
+        return errormessage(res,500,err)
+      }
+         
+   
+        // req.body.user=req.user._id
+        // const payment=await Payment.create({_id:prid},req.body)
         // const product=await Product.findByIdAndUpdate({_id:proid},{$push:{products:payment}},{new:true})
-        console.log(payment)
+    
         // const product=await Product.findByIdAndUpdate({_id:proid},{$push:{product:payment}},{new:true})
         
         // // console.log(product)

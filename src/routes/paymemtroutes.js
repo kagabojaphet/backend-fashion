@@ -5,7 +5,7 @@ import verifyaccess from "../middlewares/verifyaccess";
 
 const router=express.Router()
 
-router.post("/:id",verifyaccess("user"),paymentcontroller.createpayment)
+router.post("/:_id",verifyaccess("user"),paymentcontroller.createpayment)
 router.get("/",paymentcontroller.getallpayment)
 router.delete("/",paymentcontroller.deleteallpayment)
 

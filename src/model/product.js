@@ -18,8 +18,11 @@ const productschema=new mongoose.Schema({
         required:true
     },
     productcost:{
-        type:String,
+        type:Number,
         required:true
+    },
+    currency:{
+        type:String,
     },
     pastdate:{
         type:Date,

@@ -5,15 +5,20 @@ const paymentschema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Product"
     },
+ productCost:{
+    type:Number
+ },
+ currency:{
+    type:"String"
+ },
+ source:{
+    type:"String"
+ },
     user:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"USER"
     },
-    paymentmethods:{
-        type:String,
-        enum:["creditcard","mastercard","paypal","mobilemoney"],
-        default:"mobilemoney"
-    },
+  
     paiddate:{
         type:Date,
         default:Date.now()
@@ -22,18 +27,15 @@ const paymentschema=new mongoose.Schema({
 paymentschema.pre(/^find/,function(next){
     this.populate({
         path:"products",
-        select:"productname"
-    })
-    next()
-
-});
-paymentschema.pre(/^find/,function(next){
-    this.populate({
+        select:"productname productcost"
+    }).populate({
         path:"user",
         select:"firstname lastname  username email"
     })
     next()
-})
+
+});
+
 const Payment=mongoose.model("Payment",paymentschema)
 
 export default Payment

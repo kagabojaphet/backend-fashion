@@ -6,8 +6,8 @@ import USER from "../model/user";
 
 class productcontroller{
     static async createproduct(req,res){
-        const {productimage,productname,productinfo,producttype,productcost,comment}=req.body
-        const product=await Product.create({productimage,productname,productinfo,producttype,productcost,comment})
+        const {productimage,productname,productinfo,producttype,productcost,comment,currency}=req.body
+        const product=await Product.create({productimage,productname,productinfo,producttype,productcost,comment,currency})
         if(!product){
             return errormessage(res,401,`product not uploaded`)
         }
