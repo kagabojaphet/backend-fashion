@@ -91,12 +91,16 @@ class usercontroller{
         }
     }
     static async loginuser(req,res){
-        const {email,password}=req.body
-        const user=await USER.findOne({email})
+        const { username, email, password } = req.body;
+        const user = await USER.findOne({
+            $or: [{username}, {email}],
+          });
+          console.log(user)
         try {
             if(!user){
-                return errormessage(res,401,`incorrect email`)
+                return errormessage(res,401,`incorrect username and email`)
             }
+            // const passwordmatch = await bcrypt.compare(password,user.password)
             else{
                 const token=Jwt.sign({user:user},process.env.SCRET_KEY,{expiresIn:"1d"})
 
@@ -115,6 +119,6 @@ class usercontroller{
         } catch (error) {
             return errormessage(res,404,`error ${error}`)
         }
-    }
-}
+    
+}}
 export default usercontroller
