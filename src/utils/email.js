@@ -10,7 +10,7 @@ const sendemail=async(alluserinfo,newsdata)=>{
             user:process.env.EMAIL,
             pass:process.env.PASSWORD
         },
-    });
+    }); 
     let mailoptions={
         from:process.env.EMAIL,
         to:alluserinfo.email,

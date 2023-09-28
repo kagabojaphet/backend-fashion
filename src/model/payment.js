@@ -18,7 +18,6 @@ const paymentschema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"USER"
     },
-  
     paiddate:{
         type:Date,
         default:Date.now()

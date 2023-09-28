@@ -3,6 +3,7 @@ import bcrypt from"bcrypt";
 import errormessage from "../utils/errormessage";
 import successmessage from "../utils/successmessage";
 import Jwt  from "jsonwebtoken";
+import welcomeEmail from "../utils/welcomeEmail";
 
 class usercontroller{
     static async createuser(req,res){
@@ -13,7 +14,8 @@ class usercontroller{
             } 
             const hashpassword= bcrypt.hashSync(req.body.password,10)
             const user=await USER.create({firstname,lastname,username,email,role,password:hashpassword})
-
+      
+            welcomeEmail(user)
             return successmessage(res,201,`user created`,user)
 
          
