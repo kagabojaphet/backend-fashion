@@ -100,7 +100,12 @@ class usercontroller{
             if(!user){
                 return errormessage(res,401,`incorrect username and email`)
             }
+            else{
             // const passwordmatch = await bcrypt.compare(password,user.password)
+            const passwordmatch =bcrypt.compareSync(password,user.password)
+            if(!passwordmatch){
+                return errormessage(res,401,`incorrect password`)
+            }
             else{
                 const token=Jwt.sign({user:user},process.env.SCRET_KEY,{expiresIn:"1d"})
 
@@ -115,7 +120,7 @@ class usercontroller{
                         role:user.role
                     }
                 })
-            }
+            }}
         } catch (error) {
             return errormessage(res,404,`error ${error}`)
         }
