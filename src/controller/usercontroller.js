@@ -94,9 +94,7 @@ class usercontroller{
     }
     static async loginuser(req,res){
         const { username, email, password } = req.body;
-        const user = await USER.findOne({
-            $or: [{username}, {email}],
-          });
+        const user = await USER.findOne({email});
           console.log(user)
         try {
             if(!user){
